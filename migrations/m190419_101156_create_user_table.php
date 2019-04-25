@@ -12,7 +12,7 @@ class m190419_101156_create_user_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('user', [
+        $this->createTable('users', [
             'id' => $this->primaryKey()->notNull()->unique(),
             'username' => $this->string(45)->notNull()->unique(),
             'password' => $this->string(32)->notNull(),
@@ -26,6 +26,6 @@ class m190419_101156_create_user_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('user');
+        $this->dropTable('users');
     }
 }

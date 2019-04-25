@@ -13,14 +13,14 @@ use Yii;
  * @property string $authKey
  * @property string $accessToken
  */
-class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'user';
+        return 'users';
     }
 
     /**
