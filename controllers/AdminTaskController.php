@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\tables\Users;
 use Yii;
 use app\models\tables\Tasks;
 use app\models\filters\TasksFilter;
@@ -66,12 +67,18 @@ class AdminTaskController extends Controller
     {
         $model = new Tasks();
 
+        $usersList = Users::find()
+            ->select(['username'])
+            ->indexBy('id')
+            ->column();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'usersList' => $usersList
         ]);
     }
 
@@ -90,8 +97,14 @@ class AdminTaskController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $usersList = Users::find()
+            ->select(['username'])
+            ->indexBy('id')
+            ->column();
+
         return $this->render('update', [
             'model' => $model,
+            'usersList' => $usersList
         ]);
     }
 

@@ -3,8 +3,6 @@
 use yii\helpers\Html;
 use yii\web\View;
 use yii\widgets\ActiveForm;
-use app\models\tables\Users;
-use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\tables\Task */
@@ -13,24 +11,21 @@ use yii\helpers\ArrayHelper;
 
 <div class="task-form">
 
-    <?php $form = ActiveForm::begin();
-    $users = Users::find()->all();
-
-    $items = ArrayHelper::map($users, 'id', 'username');
-
-    $params = [
-        'prompt' => "Выберете пользователя"
-    ];?>
+    <?php $form = ActiveForm::begin();?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'creator_id')->dropDownList($items, $params) ?>
+    <?= $form->field($model, 'creator_id')->dropDownList($usersList, [
+            'prompt' => 'Выбирете пользователя'
+    ]) ?>
 
-    <?= $form->field($model, 'responsible_id')->dropDownList($items, $params) ?>
+    <?= $form->field($model, 'responsible_id')->dropDownList($usersList, [
+            'prompt' => 'Выбирете пользователя'
+    ]) ?>
 
-    <?= $form->field($model, 'deadline')->textInput() ?>
+    <?= $form->field($model, 'deadline')->textInput(['type' => 'date']) ?>
 
     <?= $form->field($model, 'status_id')->textInput() ?>
 
