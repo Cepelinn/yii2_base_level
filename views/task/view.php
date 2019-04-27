@@ -1,17 +1,9 @@
-<?php
 
-use yii\widgets\DetailView;
+<div class="tasks-update">
 
-?>
-<?= DetailView::widget([
-    'model' => $model,
-    'attributes' => [
-        'id',
-        'name',
-        'description',
-        'creator_id',
-        'responsible_id',
-        'deadline',
-        'status_id',
-    ],
-]) ?>
+    <?= $this->render('_form', [
+        'model' => $model,
+        'usersList' => $usersList
+    ]) ?>
+
+</div>

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\tables\Users;
 use Yii;
 use yii\data\ActiveDataProvider;
 use app\models\tables\Tasks;
@@ -32,11 +33,23 @@ class TaskController extends Controller
         if(isset($_GET['task_id'])){
             $id = $_GET['task_id'];
 
+            $model = $this->findModel($id);
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->actionIndex();
+            }
+
+            $usersList = Users::find()
+                ->select(['username'])
+                ->indexBy('id')
+                ->column();
+
             return $this->render('view', [
-                'model' => $this->findModel($id),
+                'model' => $model,
+                'usersList' => $usersList
             ]);
         }
-
+        return $this->actionIndex();
     }
 
     protected function findModel($id)

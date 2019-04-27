@@ -1,8 +1,6 @@
 <?php
 
 use app\components\widgets\TaskView;
-use app\models\tables\Tasks;
-;
 
 ?>
 
