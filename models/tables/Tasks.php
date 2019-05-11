@@ -3,7 +3,8 @@
 namespace app\models\tables;
 
 use Yii;
-use yii\db\QueryInterface;
+use app\models\tables\Users;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "tasks".
@@ -21,6 +22,42 @@ use yii\db\QueryInterface;
  */
 class Tasks extends \yii\db\ActiveRecord
 {
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            if ($this->responsible_id) {
+                $toUser = Users::find()
+                    ->select('email')
+                    ->where(['id' => $this->responsible_id])
+                    ->one();
+
+                Yii::$app->mailer->compose()
+                    ->setTo($toUser->email)
+                    ->setFrom(['service@yii.unu.local' => 'Service desc'])
+                    ->setSubject($this->name)
+                    ->setTextBody($this->description)
+                    ->send();
+            }
+        }
+    }
+
+    public function behaviors() {
+        parent::behaviors();
+
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    self::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    self::EVENT_BEFORE_UPDATE => ['updated_at']
+                ],
+                'value' => date('Y-m-d H:i:s'),
+            ]
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
