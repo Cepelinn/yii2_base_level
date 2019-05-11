@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\tables\Statuses;
 use app\models\tables\Users;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -21,7 +22,7 @@ class TaskController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 20,
             ],
         ]);
 
@@ -36,7 +37,7 @@ class TaskController extends Controller
             $model = $this->findModel($id);
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->actionIndex();
+                return $this->redirect('?r=task');
             }
 
             $usersList = Users::find()
@@ -44,9 +45,15 @@ class TaskController extends Controller
                 ->indexBy('id')
                 ->column();
 
+            $statusesList = Statuses::find()
+                ->select(['title'])
+                ->indexBy('id')
+                ->column();
+
             return $this->render('view', [
                 'model' => $model,
-                'usersList' => $usersList
+                'usersList' => $usersList,
+                'statusesList' => $statusesList
             ]);
         }
         return $this->actionIndex();

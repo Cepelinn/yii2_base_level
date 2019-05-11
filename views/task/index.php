@@ -8,6 +8,7 @@ use yii\widgets\ListView;
 
 <?=ListView::widget([
     'dataProvider' => $listDataProvider,
+    'summary' => false,
     'itemView' => function ($model) {
         return $this->render('_task',['model' => $model]);
     },

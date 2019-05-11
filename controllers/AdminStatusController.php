@@ -2,19 +2,17 @@
 
 namespace app\controllers;
 
-use app\models\tables\Statuses;
-use app\models\tables\Users;
 use Yii;
-use app\models\tables\Tasks;
-use app\models\filters\TasksFilter;
+use app\models\tables\Statuses;
+use app\models\filters\StatusesFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AdminTaskController implements the CRUD actions for Tasks model.
+ * AdminStatusController implements the CRUD actions for Statuses model.
  */
-class AdminTaskController extends Controller
+class AdminStatusController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,12 +30,12 @@ class AdminTaskController extends Controller
     }
 
     /**
-     * Lists all Tasks models.
+     * Lists all Statuses models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TasksFilter();
+        $searchModel = new StatusesFilter();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +45,7 @@ class AdminTaskController extends Controller
     }
 
     /**
-     * Displays a single Tasks model.
+     * Displays a single Statuses model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -60,23 +58,13 @@ class AdminTaskController extends Controller
     }
 
     /**
-     * Creates a new Tasks model.
+     * Creates a new Statuses model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Tasks();
-
-        $usersList = Users::find()
-            ->select(['username'])
-            ->indexBy('id')
-            ->column();
-
-        $statusesList = Statuses::find()
-            ->select(['title'])
-            ->indexBy('id')
-            ->column();
+        $model = new Statuses();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -84,13 +72,11 @@ class AdminTaskController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'usersList' => $usersList,
-            'statusesList' => $statusesList
         ]);
     }
 
     /**
-     * Updates an existing Tasks model.
+     * Updates an existing Statuses model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -104,25 +90,13 @@ class AdminTaskController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        $usersList = Users::find()
-            ->select(['username'])
-            ->indexBy('id')
-            ->column();
-
-        $statusesList = Statuses::find()
-            ->select(['title'])
-            ->indexBy('id')
-            ->column();
-
         return $this->render('update', [
             'model' => $model,
-            'usersList' => $usersList,
-            'statusesList' => $statusesList
         ]);
     }
 
     /**
-     * Deletes an existing Tasks model.
+     * Deletes an existing Statuses model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -136,15 +110,15 @@ class AdminTaskController extends Controller
     }
 
     /**
-     * Finds the Tasks model based on its primary key value.
+     * Finds the Statuses model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Tasks the loaded model
+     * @return Statuses the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tasks::findOne($id)) !== null) {
+        if (($model = Statuses::findOne($id)) !== null) {
             return $model;
         }
 

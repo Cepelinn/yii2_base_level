@@ -2,6 +2,7 @@
 
 namespace app\components\widgets;
 
+use app\models\tables\Statuses;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\base\InvalidConfigException;
@@ -13,22 +14,7 @@ class TaskView extends Widget
     public $task;
     public $creator;
     public $responsible;
-
-    public $template = <<<temp
-            <div class="col-sm-3">
-                <div class="card" style="border: 1px solid grey;border-radius: 5px;padding: 5px; margin: 5px">
-                    <div class="card-body">
-                        <a href="index.php?r=task/view&task_id={id}"><h5 class="card-title">{name}</h5></a>
-                        <p class="card-text">{description}</p>
-                        <div style="display: flex; justify-content: space-between">
-                            <p class="card-text">{creator}</p>
-                            <p class="card-text">{responsible}</p>
-                            <p class="card-text">{deadline}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-temp;
+    public $status;
 
     public function getCreator()
     {
@@ -53,17 +39,18 @@ temp;
     {
         $this->creator = Users::findOne($this->task->creator_id);
         $this->responsible = Users::findOne($this->task->responsible_id);
+        $this->status = Statuses::findOne($this->task->status_id);
 
 //        return var_dump($this->creator);
-        return strtr($this->template, [
-            '{id}' => $this->task->id,
-            '{name}' => $this->task->name,
-            '{description}' => $this->task->description,
-            '{creator}' => $this->creator->username,
-            '{responsible}' => $this->responsible->username,
-            '{deadline}' => $this->task->deadline ?
-                $this->task->deadline : "<span style='color :
-                red'>Date not assigned</span>"
+        return $this->render('taskPreview', [
+            'id' => $this->task->id,
+            'status' => $this->status->suffix,
+            'name' => $this->task->name,
+            'description' => $this->task->description,
+            'creator' => $this->creator->username,
+            'responsible' => $this->responsible->username,
+            'deadline' => $this->task->deadline ?
+                $this->task->deadline : "Date not assigned"
         ]);
     }
 }

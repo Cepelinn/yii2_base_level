@@ -27,7 +27,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'deadline')->textInput(['type' => 'date']) ?>
 
-    <?= $form->field($model, 'status_id')->textInput() ?>
+    <?= $form->field($model, 'status_id')->dropDownList($statusesList, [
+            'prompt' => 'Выбирете статус'
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

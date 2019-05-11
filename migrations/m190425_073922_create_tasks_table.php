@@ -37,6 +37,14 @@ class m190425_073922_create_tasks_table extends Migration
             'users',
             'id'
         );
+
+        $this->addForeignKey(
+            'fk-task-status_id',
+            'tasks',
+            'status_id',
+            'statuses',
+            'id'
+        );
     }
 
     /**
@@ -52,6 +60,11 @@ class m190425_073922_create_tasks_table extends Migration
         $this->dropForeignKey(
             'fk-task-responsible_id',
             'tasks'
+        );
+
+        $this->dropForeignKey(
+            'fk-task-status_id',
+            'statuses'
         );
 
         $this->dropTable('tasks');
