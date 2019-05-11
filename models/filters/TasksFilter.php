@@ -40,7 +40,7 @@ class TasksFilter extends Tasks
      */
     public function search($params)
     {
-        $query = Tasks::find();
+        $query = Tasks::find()->all();
 
         // add conditions that should always apply here
 

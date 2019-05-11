@@ -3,6 +3,7 @@
 namespace app\models\tables;
 
 use Yii;
+use yii\db\QueryInterface;
 
 /**
  * This is the model class for table "tasks".
