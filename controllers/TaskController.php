@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\components\cache\DbDependencyHelper;
+use app\models\filters\MonthTaskFilter;
 use app\models\tables\Statuses;
 use app\models\tables\Users;
 use Yii;
@@ -15,18 +17,17 @@ class TaskController extends Controller
     public function actionIndex()
     {
 
-        $query = Tasks::find();
+        $searchModel = new MonthTaskFilter();
+        $DataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        // add conditions that should always apply here
+        Yii::$app->getDb()->cache(function ($db) use ($DataProvider){
+            $DataProvider->prepare();
+        }, 60 * 60, DbDependencyHelper::generateDependency(Tasks::find()));
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 20,
-            ],
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'listDataProvider' => $DataProvider,
         ]);
-
-        return $this->render('index', ['listDataProvider' => $dataProvider]);
     }
 
     public function actionView()
