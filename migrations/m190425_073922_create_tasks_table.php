@@ -64,7 +64,7 @@ class m190425_073922_create_tasks_table extends Migration
 
         $this->dropForeignKey(
             'fk-task-status_id',
-            'statuses'
+            'tasks'
         );
 
         $this->dropTable('tasks');

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\cache\DbDependencyHelper;
 use app\models\filters\MonthTaskFilter;
+use app\models\tables\Comments;
 use app\models\tables\Statuses;
 use app\models\tables\Users;
 use Yii;
@@ -32,13 +33,21 @@ class TaskController extends Controller
 
     public function actionView()
     {
-        if(isset($_GET['task_id'])){
-            $id = $_GET['task_id'];
+        if(Yii::$app->request->get('task_id')){
+            $id = Yii::$app->request->get('task_id');
 
             $model = $this->findModel($id);
 
+            $commentModel = new Comments();
+
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect('?r=task');
+                Yii::$app->session->setFlash('success', 'Изменения сохранены');
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+
+            if ($commentModel->load(Yii::$app->request->post()) && $commentModel->save()) {
+                Yii::$app->session->setFlash('success', 'Комментарий успешно опубликован');
+                return $this->redirect(Yii::$app->request->referrer);
             }
 
             $usersList = Users::find()
@@ -51,10 +60,16 @@ class TaskController extends Controller
                 ->indexBy('id')
                 ->column();
 
+            $commentsListDataProvider = new ActiveDataProvider([
+                'query' => Comments::find()->where(['task_id' => $id])
+            ]);
+
             return $this->render('view', [
                 'model' => $model,
                 'usersList' => $usersList,
-                'statusesList' => $statusesList
+                'statusesList' => $statusesList,
+                'commentsListDataProvider' => $commentsListDataProvider,
+                'commentModel' => $commentModel
             ]);
         }
         return $this->actionIndex();
