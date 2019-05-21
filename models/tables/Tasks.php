@@ -5,6 +5,7 @@ namespace app\models\tables;
 use Yii;
 use app\models\tables\Users;
 use yii\behaviors\TimestampBehavior;
+use yii\imagine\Image;
 
 /**
  * This is the model class for table "tasks".
@@ -16,12 +17,18 @@ use yii\behaviors\TimestampBehavior;
  * @property int $responsible_id
  * @property string $deadline
  * @property int $status_id
+ * @property string $img_fullpath
+ * @property string $img_thumbpath
  *
  * @property Users $creator
  * @property Users $responsible
  */
 class Tasks extends \yii\db\ActiveRecord
 {
+
+    public $imageFile;
+    const ROOT_RELATIVE_IMG_PATH = "img/task/";
+
     public function behaviors() {
         parent::behaviors();
 
@@ -54,9 +61,10 @@ class Tasks extends \yii\db\ActiveRecord
             [['name', 'description', 'creator_id'], 'required'],
             [['creator_id', 'responsible_id', 'status_id'], 'integer'],
             [['deadline'], 'safe'],
-            [['name', 'description'], 'string', 'max' => 255],
+            [['name', 'description', 'img_fullpath'], 'string', 'max' => 255],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['creator_id' => 'id']],
             [['responsible_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['responsible_id' => 'id']],
+            [['imageFile'], 'file', 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -73,6 +81,8 @@ class Tasks extends \yii\db\ActiveRecord
             'responsible_id' => 'Responsible ID',
             'deadline' => 'Deadline',
             'status_id' => 'Status ID',
+            'img_fullpath' => 'Image Full Path',
+            'img_thumbpath' => 'Image Thumbnail Path'
         ];
     }
 
@@ -90,5 +100,30 @@ class Tasks extends \yii\db\ActiveRecord
     public function getResponsible()
     {
         return $this->hasOne(Users::className(), ['id' => 'responsible_id']);
+    }
+
+    public function getRootRelativePath()
+    {
+        return "img/task/";
+    }
+
+    public function getFullPath()
+    {
+        $filename = $this->imageFile->name;
+        return Yii::getAlias("@webroot/{$this->getRootRelativePath()}{$filename}");
+    }
+
+    public function getThumbPath()
+    {
+        $filename = $this->imageFile->name;
+        return Yii::getAlias("@webroot/{$this->getRootRelativePath()}thumbs/{$filename}");
+    }
+
+
+    public function upload()
+    {
+        $this->imageFile->saveAs($this->getFullPath());
+        return Image::thumbnail($this->getFullPath(), 200, 200)
+                ->save($this->getThumbPath());
     }
 }

@@ -12,6 +12,7 @@ use yii\data\ActiveDataProvider;
 use app\models\tables\Tasks;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 class TaskController extends Controller
 {
@@ -21,7 +22,7 @@ class TaskController extends Controller
         $searchModel = new MonthTaskFilter();
         $DataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        Yii::$app->getDb()->cache(function ($db) use ($DataProvider){
+        Yii::$app->getDb()->cache(function ($db) use ($DataProvider) {
             $DataProvider->prepare();
         }, 60 * 60, DbDependencyHelper::generateDependency(Tasks::find()));
 
@@ -33,12 +34,20 @@ class TaskController extends Controller
 
     public function actionView()
     {
-        if(Yii::$app->request->get('task_id')){
+        if (Yii::$app->request->get('task_id')) {
             $id = Yii::$app->request->get('task_id');
 
             $model = $this->findModel($id);
 
             $commentModel = new Comments();
+
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if ($model->imageFile && $model->upload()) {
+                $filename = $model->imageFile->name;
+                $model->img_fullpath = Yii::getAlias("@web/{$model->getRootRelativePath()}{$filename}");
+                $model->img_thumbpath = Yii::getAlias("@web/{$model->getRootRelativePath()}thumbs/{$filename}");
+            }
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 Yii::$app->session->setFlash('success', 'Изменения сохранены');

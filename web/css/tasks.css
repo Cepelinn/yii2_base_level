@@ -44,6 +44,19 @@
     background-color: #ffcdd2;
 }
 
+.single-task{
+    display: flex;
+    justify-content: space-between;
+}
+
+.single-task__img-container{
+    margin: 0 auto;
+}
+
+.single-task__img{
+    margin-top: 10px;
+}
+
 .single_task__info{
     display: flex;
     justify-content: space-between;

@@ -25,27 +25,28 @@ use yii\widgets\ListView;
         },
     ])?>
 
-    <div class="comments__form-add col-md-6">
 
-        <?php $form = ActiveForm::begin();?>
+    <?php
+    echo "<div class=\"comments__form-add col-md-6\">";
 
-        <?= $form->field($commentModel, 'creator_id')->dropDownList($usersList, [
-            'prompt' => 'Выбирете пользователя'
-        ]) ?>
-
-        <?= $form->field($commentModel, 'text')->textarea(['maxlength' => true]) ?>
-
-        <?= $form->field($commentModel, 'task_id')
+    if (!Yii::$app->user->isGuest) {
+        $form = ActiveForm::begin();
+//        echo $form->field($commentModel, 'creator_id')->dropDownList($usersList, [
+//            'prompt' => 'Выбирете пользователя'
+//        ]);
+        echo $form->field($commentModel, 'text')->textarea(['maxlength' => true]);
+        echo $form->field($commentModel, 'task_id')
             ->hiddenInput(['value' => $model->id])
-            ->label(false)?>
-
-
-        <div class="form-group">
-            <?= Html::submitButton('Publish you comment', ['class' => 'btn btn-success']) ?>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-
-    </div>
+            ->label(false);
+        echo $form->field($commentModel, 'creator_id')
+            ->hiddenInput(['value' => Yii::$app->user->id])
+            ->label(false);
+        echo "<div class=\"form-group\">";
+        echo Html::submitButton('Publish you comment', ['class' => 'btn btn-success']);
+        echo "</div>";
+        ActiveForm::end();
+        echo "</div>";
+    }
+    ?>
 
 </div>

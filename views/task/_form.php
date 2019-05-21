@@ -9,9 +9,17 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="task-form single_task">
+<div class="task-form single-task">
 
-    <?php $form = ActiveForm::begin();?>
+   <div class="single-task__img-container col-1">
+       <img class="single-task__img" src="<?php
+            echo !($model->img_thumbpath) ?
+                Yii::getAlias("@web/{$model->getRootRelativePath()}thumb/no-image.png") :
+                $model->img_thumbpath ?>"
+            alt="task image">
+</div>
+
+    <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -30,6 +38,8 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'status_id')->dropDownList($statusesList, [
             'prompt' => 'Выбирете статус'
         ]) ?></div>
+
+    <?= $form->field($model, 'imageFile')->fileInput()->label('Image')?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
