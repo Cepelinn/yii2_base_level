@@ -1,4 +1,4 @@
-<a href="?r=task"><h2>All Tasks</h2></a>
+<h2>All Tasks</h2>
 
 <?php
 

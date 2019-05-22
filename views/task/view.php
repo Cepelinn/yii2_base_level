@@ -31,9 +31,6 @@ use yii\widgets\ListView;
 
     if (!Yii::$app->user->isGuest) {
         $form = ActiveForm::begin();
-//        echo $form->field($commentModel, 'creator_id')->dropDownList($usersList, [
-//            'prompt' => 'Выбирете пользователя'
-//        ]);
         echo $form->field($commentModel, 'text')->textarea(['maxlength' => true]);
         echo $form->field($commentModel, 'task_id')
             ->hiddenInput(['value' => $model->id])
@@ -42,7 +39,7 @@ use yii\widgets\ListView;
             ->hiddenInput(['value' => Yii::$app->user->id])
             ->label(false);
         echo "<div class=\"form-group\">";
-        echo Html::submitButton('Publish you comment', ['class' => 'btn btn-success']);
+        echo Html::submitButton(Yii::t('app', 'publish'), ['class' => 'btn btn-success']);
         echo "</div>";
         ActiveForm::end();
         echo "</div>";

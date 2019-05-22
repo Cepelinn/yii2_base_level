@@ -74,15 +74,15 @@ class Tasks extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'creator_id' => 'Creator ID',
-            'responsible_id' => 'Responsible ID',
-            'deadline' => 'Deadline',
-            'status_id' => 'Status ID',
-            'img_fullpath' => 'Image Full Path',
-            'img_thumbpath' => 'Image Thumbnail Path'
+            'id' => Yii::t('app', 'task_id'),
+            'name' => Yii::t('app', 'task_name'),
+            'description' => Yii::t('app', 'task_description'),
+            'creator_id' => Yii::t('app', 'task_creator_id'),
+            'responsible_id' => Yii::t('app', 'task_responsible_id'),
+            'deadline' => Yii::t('app', 'task_deadline'),
+            'status_id' => Yii::t('app', 'task_status_id'),
+            'img_fullpath' => Yii::t('app', 'task_img_fullpath'),
+            'img_thumbpath' => Yii::t('app', 'task_imt_thumbpath')
         ];
     }
 

@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
     <div class="form-group">
             <?= $form->field($searchModel, 'deadline')->textInput(['type' => 'month']) ?>
 
-            <?= Html::submitButton('Apply', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('app', 'filter'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

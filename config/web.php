@@ -4,14 +4,26 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
+    'language' => 'ru',
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'emailTaskNotification'],
+    'bootstrap' => ['log', 'emailTaskNotification', 'changeLanguage'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class'=> \yii\i18n\PhpMessageSource::class,
+                    'basePath' => "@app/messages"
+                ]
+            ]
+        ],
+        'changeLanguage' => [
+            'class' => \app\components\ChangeLanguageComponent::class
+        ],
         'emailTaskNotification' => [
             'class' => \app\components\SendEmailNotificationComponent::class
         ],
