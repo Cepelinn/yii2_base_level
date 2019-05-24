@@ -18,5 +18,8 @@ return [
     'task_deadline' => 'Срок выполнения',
     'task_status_id' => 'Статус',
     'task_img_fullpath' => 'Путь до оригинала',
-    'task_img_thumbpath' => 'Путь до уменьшеной копии'
+    'task_img_thumbpath' => 'Путь до уменьшеной копии',
+    'attachments' => 'Вложения',
+    'comments' => 'Комментарии',
+    'send' => 'Отправить'
 ];

@@ -126,4 +126,9 @@ class Tasks extends \yii\db\ActiveRecord
         return Image::thumbnail($this->getFullPath(), 200, 200)
                 ->save($this->getThumbPath());
     }
+
+    public function getTaskAttachments()
+    {
+        return $this->hasMany(Attachments::class, ['task_id' => 'id']);
+    }
 }

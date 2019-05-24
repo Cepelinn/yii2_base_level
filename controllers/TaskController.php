@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\forms\TaskAttachmentsAddForm;
 use app\components\cache\DbDependencyHelper;
 use app\models\filters\MonthTaskFilter;
 use app\models\tables\Comments;
@@ -78,7 +79,8 @@ class TaskController extends Controller
                 'usersList' => $usersList,
                 'statusesList' => $statusesList,
                 'commentsListDataProvider' => $commentsListDataProvider,
-                'commentModel' => $commentModel
+                'commentModel' => $commentModel,
+                'taskAttachmentForm' => new TaskAttachmentsAddForm()
             ]);
         }
         return $this->actionIndex();
@@ -91,5 +93,18 @@ class TaskController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionAddAttachment()
+    {
+        $model = new TaskAttachmentsAddForm();
+        $model->load(\Yii::$app->request->post());
+        $model->attachment = UploadedFile::getInstance($model, 'attachment');
+        if ($model->save()) {
+            \Yii::$app->session->setFlash('success', "Файл добавлен!");
+        } else {
+            \Yii::$app->session->setFlash('error', "Не удалось добавить Файл");
+        }
+        $this->redirect(\Yii::$app->request->referrer);
     }
 }
