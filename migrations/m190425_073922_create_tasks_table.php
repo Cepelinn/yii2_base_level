@@ -19,7 +19,9 @@ class m190425_073922_create_tasks_table extends Migration
             'creator_id' => $this->integer()->notNull(),
             'responsible_id' => $this->integer(),
             'deadline' => $this->date(),
-            'status_id' => $this->integer()
+            'status_id' => $this->integer(),
+            'img_fullpath' => $this->string(),
+            'img_thumbpath' => $this->string()
         ]);
 
         $this->addForeignKey(
@@ -64,7 +66,7 @@ class m190425_073922_create_tasks_table extends Migration
 
         $this->dropForeignKey(
             'fk-task-status_id',
-            'statuses'
+            'tasks'
         );
 
         $this->dropTable('tasks');
