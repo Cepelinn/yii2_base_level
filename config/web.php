@@ -4,7 +4,7 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'language' => 'ru',
+    'language' => 'en',
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'emailTaskNotification', 'changeLanguage'],
@@ -58,14 +58,16 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'tasks' => 'task/index',
+                'task/<id>' => 'task/view'
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];

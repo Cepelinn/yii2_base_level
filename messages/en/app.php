@@ -19,5 +19,8 @@ return [
     'task_deadline' => 'Deadline',
     'task_status_id' => 'Status ID',
     'task_img_fullpath' => 'Image Full Path',
-    'task_img_thumbpath' => 'Image Thumbnail Path'
+    'task_img_thumbpath' => 'Image Thumbnail Path',
+    'attachments' => 'Attachments',
+    'comments' => 'Comments',
+    'send' => "Send"
 ];
